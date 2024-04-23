@@ -45,25 +45,6 @@ class BlazeBlock(nn.Module):
 
 
 class BlazeFace(nn.Module):
-    """The BlazeFace face detection model from MediaPipe.
-    
-    The version from MediaPipe is simpler than the one in the paper; 
-    it does not use the "double" BlazeBlocks.
-
-    Because we won't be training this model, it doesn't need to have
-    batchnorm layers. These have already been "folded" into the conv 
-    weights by TFLite.
-
-    The conversion to PyTorch is fairly straightforward, but there are 
-    some small differences between TFLite and PyTorch in how they handle
-    padding on conv layers with stride 2.
-
-    This version works on batches, while the MediaPipe version can only
-    handle a single image at a time.
-
-    Based on code from https://github.com/tkat0/PyTorch_BlazeFace/ and
-    https://github.com/google/mediapipe/
-    """
     input_size = (128, 128)
 
     detection_keys = [
@@ -311,24 +292,6 @@ class BlazeFace(nn.Module):
         return boxes
 
     def _weighted_non_max_suppression(self, detections):
-        """The alternative NMS method as mentioned in the BlazeFace paper:
-
-        "We replace the suppression algorithm with a blending strategy that
-        estimates the regression parameters of a bounding box as a weighted
-        mean between the overlapping predictions."
-
-        The original MediaPipe code assigns the score of the most confident
-        detection to the weighted detection, but we take the average score
-        of the overlapping detections.
-
-        The input detections should be a Tensor of shape (count, 17).
-
-        Returns a list of PyTorch tensors, one for each detected face.
-        
-        This is based on the source code from:
-        mediapipe/calculators/util/non_max_suppression_calculator.cc
-        mediapipe/calculators/util/non_max_suppression_calculator.proto
-        """
         if len(detections) == 0: return []
 
         output_detections = []

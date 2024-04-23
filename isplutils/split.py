@@ -1,15 +1,4 @@
 from typing import List, Dict, Tuple
-"""
-Video Face Manipulation Detection Through Ensemble of CNNs
-
-Image and Sound Processing Lab - Politecnico di Milano
-
-Nicolò Bonettini
-Edoardo Daniele Cannas
-Sara Mandelli
-Luca Bondi
-Paolo Bestagini
-"""
 import numpy as np
 import pandas as pd
 
@@ -21,7 +10,7 @@ available_datasets = [
     'ff-c23-720-140-140-15fpv',
     'ff-c23-720-140-140-20fpv',
     'ff-c23-720-140-140-25fpv',
-    'celebdf',  # just for convenience, not used in the original paper
+    'celebdf',  
 ]
 
 
